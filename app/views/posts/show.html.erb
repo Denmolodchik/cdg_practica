@@ -1,0 +1,36 @@
+<p>
+<h1>Photo</h1>
+<%= image_tag @post.image_url%>
+<%= link_to 'Back', user_posts_path(@user) %>
+</p>
+
+<h2> All comments </h2>
+
+<tbody>
+    <% @post.comments.each do |comment| %>
+        <tr>
+        </br>
+        <td><%= comment.username %></td> : </br>
+        <td><%= comment.body %></td> </br>
+        <% if current_user.present? && current_user.name == comment.username %>
+        <%= link_to("Delete comment", post_comment_path(post_id: @post.id, comment_id: comment.id), method: :delete) %>
+        <%end%>
+        </tr>
+    <%end%>
+</tbody>
+
+<% if user_signed_in? %>
+    <%= form_for([@post, @post.comments.build]) do |form|%>
+
+        Пользователь.
+        <%= current_user.name %> </br> 
+        Текст комментария.
+        <div class="field">
+            <%= form.text_area(:body, {:class => 'form-control'}) %>
+        </div>
+
+        <div class="actions">
+            <%= form.submit %>
+        </div>
+    <% end %>
+<% end %>
