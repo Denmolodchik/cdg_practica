@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_12_134413) do
+ActiveRecord::Schema.define(version: 2021_07_14_084357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,15 @@ ActiveRecord::Schema.define(version: 2021_07_12_134413) do
   create_table "follows", force: :cascade do |t|
     t.integer "follower_id"
     t.integer "following_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_likes_on_post_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -58,8 +67,10 @@ ActiveRecord::Schema.define(version: 2021_07_12_134413) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "comments", "posts"
-  add_foreign_key "follows", "users", column: "follower_id"
-  add_foreign_key "follows", "users", column: "following_id"
-  add_foreign_key "posts", "users"
+  add_foreign_key "comments", "posts", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "follows", "users", column: "follower_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "follows", "users", column: "following_id", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "likes", "posts", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "likes", "users", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "posts", "users", on_update: :cascade, on_delete: :cascade
 end

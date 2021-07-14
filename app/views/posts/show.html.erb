@@ -1,7 +1,20 @@
 <p>
 <h1>Photo</h1>
-<%= image_tag @post.image_url%>
-<%= link_to 'Back', user_posts_path(@user) %>
+<%= image_tag @post.image_url, size: 500%></br>
+<%= @user.name %> </br>
+<%= @post.title %> </br> 
+<%= @post.body %> </br>
+<%= Like.where(post_id: @post.id).count %>
+<% if current_user.present?%>
+    <% if (Like.where(user_id: current_user.id, post_id: @post.id).take == nil) %>
+        <%= link_to("Like", likes_path(post_id: @post.id), method: :post) %>
+    <%else%>
+        <%= link_to("UnLike", like_path(post_id: @post.id), method: :delete) %>
+    <%end%>
+<%end%>
+<%= link_to("Likes", likes_path(post_id: @post.id)) %> </br>
+<%= link_to("Feed", feed_posts_path) %>
+<%= link_to("Other posts of the user", user_posts_path(@user))%>
 </p>
 
 <h2> All comments </h2>

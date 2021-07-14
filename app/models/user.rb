@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :likes
+  has_many :posts
   EMAIL_FORMAT = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

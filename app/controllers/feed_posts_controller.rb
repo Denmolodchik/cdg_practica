@@ -7,7 +7,5 @@ class FeedPostsController < ApplicationController
         else
             @posts = Post.all
         end
-
     end
-
 end

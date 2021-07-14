@@ -17,7 +17,7 @@ class PostsController < ApplicationController
 
     def create 
         @post = Post.new(post_params)
-        @post.user_id = @user.id
+        @post.user_id = current_user.id
         if @post.save
             redirect_to user_post_path(@user, @post), flash: { success: "Post was added"}
         else
@@ -26,15 +26,13 @@ class PostsController < ApplicationController
     end
 
     def edit
-        @posts = Post.select{|post| post.user_id == @user.id} 
-        @post = @posts.find(params[:id])
+        @post = current_user.posts.find(params[:id])
     end
 
     def update
-        @posts = Post.select{|post| post.user_id == @user.id} 
-        @post = @posts.find(params[:id])
+        @post = Post.find(params[:id])
         @post.update(post_params)
-        redirect_to user_post_path, flash: { success: "Post was updated"}
+        redirect_to user_post_path(@user, @post), flash: { success: "Post was updated"}
     end
 
     def destroy

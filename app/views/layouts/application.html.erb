@@ -13,6 +13,7 @@
     <header>
     <% if user_signed_in? %>
     <span><%= current_user.name %></span>
+    <%= link_to("Новый пост", new_user_post_path(current_user)) %>
     <%= link_to("Профиль", user_path(current_user)) %>
     <%= link_to 'Выйти', destroy_user_session_path, :method => :delete %>
     <% else %>

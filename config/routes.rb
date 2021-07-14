@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   root to: "home#index"
+  get 'back/index', as: 'back_root'
 
   resources :users, only: [:show] do
     resources :posts
@@ -15,4 +16,7 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :destroy]
   end
 
+  resources :likes, only: [:create, :destroy, :index]
+
+  resources :posts, only: [:back]
 end
