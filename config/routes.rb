@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
   root to: "home#index"
-  get 'back/index', as: 'back_root'
-
+  get 'posts/all', as: "post_all"
+  get 'users/all', as: "user_all"
+  
   resources :users, only: [:show] do
     resources :posts
     resources :followers, only: :index

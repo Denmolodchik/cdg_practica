@@ -3,6 +3,10 @@ class PostsController < ApplicationController
     before_action :load_user
     before_action :authenticate_user!, only: [:new,:create,:edit,:update,:destroy]
 
+    def all 
+        @posts = Post.all.order(updated_at: :desc)
+    end
+
     def index 
         @posts = Post.select{|post| post.user_id == @user.id}
     end
@@ -18,7 +22,7 @@ class PostsController < ApplicationController
     def create 
         @post = Post.new(post_params)
         @post.user_id = current_user.id
-        if @post.save
+        if @post.save!
             redirect_to user_post_path(@user, @post), flash: { success: "Post was added"}
         else
             render :new, flash: {alert: "Some error occured"}

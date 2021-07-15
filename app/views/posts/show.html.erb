@@ -1,7 +1,7 @@
 <p>
 <h1>Photo</h1>
 <%= image_tag @post.image_url, size: 500%></br>
-<%= @user.name %> </br>
+<%= link_to(@user.name, user_path(@user)) %></br>
 <%= @post.title %> </br> 
 <%= @post.body %> </br>
 <%= Like.where(post_id: @post.id).count %>
