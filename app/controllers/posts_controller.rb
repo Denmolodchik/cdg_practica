@@ -1,18 +1,18 @@
 class PostsController < ApplicationController
     
-    before_action :load_user
     before_action :authenticate_user!, only: [:new,:create,:edit,:update,:destroy]
+    before_action :load_user
 
     def all 
         @posts = Post.all.order(updated_at: :desc)
     end
 
     def index 
-        @posts = Post.select{|post| post.user_id == @user.id}
+        @posts = @user.posts
     end
 
     def show
-        @post = Post.find(params[:id])
+        @post = @user.posts.find(params[:id])
     end
 
     def new
@@ -21,7 +21,7 @@ class PostsController < ApplicationController
 
     def create 
         @post = Post.new(post_params)
-        @post.user_id = current_user.id
+        @post.user = @user
         if @post.save!
             redirect_to user_post_path(@user, @post), flash: { success: "Post was added"}
         else
@@ -30,17 +30,17 @@ class PostsController < ApplicationController
     end
 
     def edit
-        @post = current_user.posts.find(params[:id])
+        @post = @user.posts.find(params[:id])
     end
 
     def update
-        @post = Post.find(params[:id])
+        @post = @user.posts.find(params[:id])
         @post.update(post_params)
         redirect_to user_post_path(@user, @post), flash: { success: "Post was updated"}
     end
 
     def destroy
-        @post = Post.find(params[:id])
+        @post = @user.posts.find(params[:id])
         @post.destroy
 
         redirect_to action: :index

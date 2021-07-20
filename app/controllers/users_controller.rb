@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
 
-    before_action :authenticate_user!
+    before_action :authenticate_user!, only: [:index]
 
-    def all
+    def index
         @users = User.all.order(created_at: :desc)
     end
 
