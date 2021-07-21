@@ -8,11 +8,12 @@ class PostsController < ApplicationController
     end
 
     def index 
-        @posts = @user.posts
+        @user = User.find(params[:user_id])
+        @posts = Post.select{|post| post.user_id == @user.id}
     end
 
     def show
-        @post = @user.posts.find(params[:id])
+        @post = Post.find(params[:id])
     end
 
     def new
@@ -22,7 +23,7 @@ class PostsController < ApplicationController
     def create 
         @post = Post.new(post_params)
         @post.user = @user
-        if @post.save!
+        if @post.save
             redirect_to user_post_path(@user, @post), flash: { success: "Post was added"}
         else
             render :new, flash: {alert: "Some error occured"}
@@ -35,8 +36,12 @@ class PostsController < ApplicationController
 
     def update
         @post = @user.posts.find(params[:id])
-        @post.update(post_params)
-        redirect_to user_post_path(@user, @post), flash: { success: "Post was updated"}
+        if @post.update(post_params)
+            redirect_to user_post_path(@user, @post), flash: { success: "Post was updated"}
+        else
+            render :new, flash: { alert: 'Some error occured' }
+        end
+    
     end
 
     def destroy

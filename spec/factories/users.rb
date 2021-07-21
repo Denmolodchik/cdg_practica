@@ -2,7 +2,7 @@
 require 'ffaker'
 
 FactoryBot.define do
-    factory :user do
+    factory :user, aliases: [:follower, :following] do
         name { FFaker::Name.name }
         email { FFaker::Internet.email }
         bio { FFaker::Job.title }

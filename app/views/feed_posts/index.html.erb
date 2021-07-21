@@ -3,7 +3,7 @@
 <h1> Feed </h1>
 
 <tbody>
-    <% @posts.each do |post| %>
+    <% @feeds.each do |post| %>
         <tr>
         <td><%= post.title %></td> </br>
         <td><%= image_tag post.image_url, size: 250 %></td> </br>

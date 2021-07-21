@@ -3,9 +3,9 @@ class FeedPostsController < ApplicationController
 
     def index 
         if current_user.followings.exists?
-            @posts = Post.where(user_id: current_user.followings.pluck(:id)).order(created_at: :desc)
+            @feeds = Post.where(user_id: current_user.followings.pluck(:id)).order(created_at: :desc)
         else
-            @posts = Post.all
+            @feeds = Post.all
         end
     end
 end

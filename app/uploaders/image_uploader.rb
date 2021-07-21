@@ -11,6 +11,6 @@ class ImageUploader < Shrine
     end
 
     Attacher.validate do
-        validate_extension %w[jpeg png gif]
+        validate_extension %w[jpeg png gif jpg]
     end
 end
