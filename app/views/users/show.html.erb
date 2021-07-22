@@ -18,6 +18,6 @@
   <% if (Follow.where(follower: current_user, following: @user.id).take == nil) %>
     <%= link_to("Follow", follows_path(following_id: @user.id), method: :post) %>
   <%else%>
-    <%= link_to("Unfollow", follow_path(following_id: @user.id), method: :delete) %>
+    <%= link_to("Unfollow", follow_path(@user), method: :delete) %>
   <%end%>
 <% end%>

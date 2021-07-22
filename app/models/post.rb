@@ -1,6 +1,6 @@
 class Post < ActiveRecord::Base
     include ImageUploader::Attachment(:image)
-    belongs_to :users, optional: true
+    belongs_to :user
     has_many :likes
     has_many :comments
     validates :title, presence: true, length: { maximum: 100 }

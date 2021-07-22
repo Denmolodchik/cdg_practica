@@ -13,7 +13,7 @@ class FollowsController < ApplicationController
 
     def destroy
         follower_user = current_user
-        following_user = User.find(params[:following_id])
+        following_user = User.find(params[:id])
 
         Follow.where(follower: follower_user, following: following_user).destroy_all
 
