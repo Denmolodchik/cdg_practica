@@ -2,9 +2,8 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "home#index"
   get 'posts/all', as: "post_all"
-  get 'users/all', as: "user_all"
   
-  resources :users, only: [:show] do
+  resources :users, only: [:show, :index] do
     resources :posts
     resources :followers, only: :index
     resources :followings, only: :index
@@ -15,9 +14,8 @@ Rails.application.routes.draw do
 
   resources :posts do
     resources :comments, only: [:create, :destroy]
+    resources :likes, only: [:create, :destroy, :index]
   end
-
-  resources :likes, only: [:create, :destroy, :index]
 
   resources :posts, only: [:back]
 end

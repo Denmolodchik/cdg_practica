@@ -1,20 +1,20 @@
 <p>
 <h1>Photo</h1>
 <%= image_tag @post.image_url, size: 500%></br>
-<%= link_to(@user.name, user_path(@user)) %></br>
+<%= link_to(User.find(@post.user_id).name, user_path(User.find(@post.user_id))) %></br>
 <%= @post.title %> </br> 
 <%= @post.body %> </br>
 <%= Like.where(post_id: @post.id).count %>
 <% if current_user.present?%>
     <% if (Like.where(user_id: current_user.id, post_id: @post.id).take == nil) %>
-        <%= link_to("Like", likes_path(post_id: @post.id), method: :post) %>
+        <%= link_to("Like", post_likes_path(post_id: @post.id), method: :post) %>
     <%else%>
-        <%= link_to("UnLike", like_path(post_id: @post.id), method: :delete) %>
+        <%= link_to("UnLike", post_like_path(post_id: @post.id), method: :delete) %>
     <%end%>
 <%end%>
-<%= link_to("Likes", likes_path(post_id: @post.id)) %> </br>
+<%= link_to("Likes", post_likes_path(post_id: @post.id)) %> </br>
 <%= link_to("Feed", feed_posts_path) %>
-<%= link_to("Other posts of the user", user_posts_path(@user))%>
+<%= link_to("Other posts of the user", user_posts_path(user_id: @post.user_id))%>
 </p>
 
 <h2> All comments </h2>
@@ -26,7 +26,7 @@
         <td><%= comment.username %></td> : </br>
         <td><%= comment.body %></td> </br>
         <% if current_user.present? && current_user.name == comment.username %>
-        <%= link_to("Delete comment", post_comment_path(post_id: @post.id, comment_id: comment.id), method: :delete) %>
+        <%= link_to("Delete comment", post_comment_path(@post, comment), method: :delete) %>
         <%end%>
         </tr>
     <%end%>
