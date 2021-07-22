@@ -28,9 +28,21 @@ RSpec.describe LikesController, type: :controller do
         let(:params) { { post_id: post.id } }
 
         subject { process :create, method: :post, params: params }
-        it 'create likes' do
+        it 'create like' do
             expect { subject }.to change { Like.count }.by(1)
             is_expected.to redirect_to(user_post_path(user, assigns(:post)))
+        end
+
+        context 'when user likes elses user posts' do
+            let(:params) { { post_id: post1.id } }
+            let!(:post1) { create :post }
+
+            subject { process :create, method: :post, params: params }
+
+            it 'create like' do
+                expect { subject }.to change { Like.count }.by(1)
+                is_expected.to redirect_to(user_post_path(user, assigns(:post)))
+            end
         end
     end
 

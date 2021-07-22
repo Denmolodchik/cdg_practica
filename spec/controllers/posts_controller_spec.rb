@@ -36,12 +36,14 @@ RSpec.describe PostsController, type: :controller do
         it { is_expected.to render_template(:show) }
 
         context 'when user tries to see someone elses post' do
-            
-            let!(:post) { create :post }
+            let(:params) { { user_id: user.id, id: post1 } }
+            let!(:post1) { create :post }
+
+            subject { get :show, params: params }
 
             it 'assigns @post' do
                 subject
-                expect(assigns(:post)).to eq(post)
+                expect(assigns(:post)).to eq(post1)
             end
         end
 
@@ -140,5 +142,19 @@ RSpec.describe PostsController, type: :controller do
             expect { subject }.to change { Post.count }.by(-1)
             is_expected.to redirect_to(user_posts_path(assigns(:user)))
         end
+    end
+
+    describe '#all' do
+        let!(:post1) { create :post, user: user }
+        let!(:post2) { create :post }
+        let(:params) { { user_id: user } }
+
+        subject { get :all, params: params }
+
+        it 'assigns @posts' do
+            subject
+            expect(assigns(:posts)).to eq([post2, post1])
+        end
+
     end
 end
